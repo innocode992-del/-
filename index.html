@@ -515,8 +515,8 @@ body.app-visible #app-shell{opacity:1;visibility:visible;pointer-events:auto;tra
   
     <section id="ai" class="page">
       <div class="section-head">
-        <div><div class="eyebrow">مساعدك الشخصي داخل حفظني</div><h2>AI</h2><p>مساعد ذكي يجيب عن أسئلتك باستخدام Gemini، مع الاحتفاظ بقواعدك المخصصة داخل المتصفح.</p></div>
-        <span class="pill">Gemini AI</span>
+        <div><div class="eyebrow">مساعدك الشخصي داخل حفظني</div><h2>AI</h2><p>محرك خفيف يعالج الكلام على جهازك داخل المتصفح، من غير API أو تنزيل نموذج ضخم.</p></div>
+        <span class="pill">تشغيل محلي خفيف</span>
       </div>
       <div class="ai-shell">
         <div class="ai-intro">
@@ -525,7 +525,7 @@ body.app-visible #app-shell{opacity:1;visibility:visible;pointer-events:auto;tra
           <button class="btn btn-outline ai-clear" id="ai-clear" type="button">محادثة جديدة</button>
         </div>
         <div class="ai-model-control" style="padding:12px 16px;background:#f7faf7;border-bottom:1px solid #edf0eb;font-size:11px;color:#617368;line-height:1.8">
-          <span id="ai-model-status">جاري فحص الاتصال بخدمة Gemini…</span>
+          <span id="ai-model-status">المعالجة على جهازك — لا يوجد تنزيل نموذج أو تحديث تلقائي.</span>
         </div>
         <div class="ai-suggestions" id="ai-suggestions">
           <button type="button" class="ai-suggestion" data-ai-prompt="عامل إيه؟">عامل إيه؟</button>
@@ -535,19 +535,19 @@ body.app-visible #app-shell{opacity:1;visibility:visible;pointer-events:auto;tra
           <button type="button" class="ai-suggestion" data-ai-prompt="ما مقام البيات؟">تعلم المقامات</button>
         </div>
         <div class="ai-chat" id="ai-chat" role="log" aria-live="polite" aria-relevant="additions">
-          <div class="ai-message assistant"><span class="ai-avatar">AI</span><div class="ai-bubble">أهلًا بيك! أنا AI ياسين بن محمد. اسألني بطريقتك العادية، وهساعدك في حفظني والقرآن والتجويد والأسئلة العامة. القواعد المخصصة بتاعتك بتتطبق محليًا، والأسئلة العامة بتتبعت لخدمة Gemini عشان تولّد الرد.</div></div>
+          <div class="ai-message assistant"><span class="ai-avatar">AI</span><div class="ai-bubble">أهلًا بيك! أنا AI ياسين بن محمد. اكتب سؤالك بطريقتك العادية؛ هحلله محليًا على جهازك وأبحث في المعرفة والقواعد المحفوظة، من غير تنزيل نموذج أو إرسال المحادثة لخادم.</div></div>
         </div>
         <form class="ai-compose" id="ai-form">
           <label class="sr-only" for="ai-input">اكتب سؤالك</label>
           <textarea id="ai-input" rows="2" maxlength="3000" placeholder="اكتب سؤالك هنا…" required></textarea>
           <button class="btn btn-primary" id="ai-send" type="submit"><span>إرسال</span><span aria-hidden="true">➤</span></button>
         </form>
-        <div class="ai-footnote" id="ai-status" role="status">جاري فحص اتصال Gemini. عند استخدام المساعد العام، يتم إرسال نص المحادثة إلى Google Gemini عبر خادم الموقع؛ مفتاح API لا يظهر في المتصفح.</div>
+        <div class="ai-footnote" id="ai-status" role="status">وضع خفيف: تحليل نصي وقاعدة معرفة محلية. لا يتم تنزيل ملفات AI أو إرسال رسائلك إلى خادم.</div>
       </div>
       <details class="ai-teach-panel" id="ai-teach-panel">
         <summary><span>⚙️ علّم AI ياسين بن محمد قواعد جديدة</span><small>أضف سؤالًا أو كلمات مفتاحية وحدد الرد الذي تريده</small></summary>
         <div class="ai-teach-body">
-          <p class="ai-local-note">القواعد التي تضيفها تُحفظ على هذا المتصفح والجهاز فقط، وتُطبّق محليًا قبل إرسال السؤال إلى Gemini. اكتب صيغًا مختلفة للسؤال وافصل بينها بفاصلة؛ مثل: عامل إيه، أخبارك، إزيك.</p>
+          <p class="ai-local-note">القواعد التي تضيفها تُحفظ على هذا المتصفح والجهاز فقط، ويستخدمها المحرك المحلي قبل قاعدة المعرفة. اكتب صيغًا مختلفة للسؤال وافصل بينها بفاصلة؛ مثل: عامل إيه، أخبارك، إزيك.</p>
           <form id="ai-rule-form" class="ai-rule-form">
             <label for="ai-rule-keywords">السؤال أو الكلمات المفتاحية</label>
             <input id="ai-rule-keywords" type="text" maxlength="240" placeholder="مثال: عامل إيه، أخبارك، إزيك" required>
@@ -1853,7 +1853,7 @@ try{
   const STORAGE_KEY = 'hafazni-ai-yaseen-rules-v1';
   const PROFILE_KEY = 'hafazni-ai-yaseen-profile-v2';
   const DIALOGUE_KEY = 'hafazni-ai-yaseen-dialogue-v2';
-  let conversationHistory = []; // Recent chat context sent securely to the server-side Gemini function.
+  let conversationHistory = []; // Local-only conversation context; never sent to a server.
   let busy = false;
   let editingRuleId = null;
   let customRules = loadRules();
@@ -2526,60 +2526,6 @@ try{
     return answerQuestion(message, understood, previousContext);
   }
 
-  function getLocalQuickReply(message, understood, previousContext) {
-    // Keep personal-name handling and user-created rules local to this browser.
-    if (['name_introduction', 'recall_name'].includes(understood.intent)) {
-      return answerQuestion(message, understood, previousContext);
-    }
-    const custom = matchCustomRule(message);
-    if (custom) return custom;
-    return null;
-  }
-
-  async function callHafazniGemini(messages) {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store',
-      body: JSON.stringify({
-        messages: messages.map(item => ({
-          role: item.role,
-          content: item.text
-        })),
-        profileName: String(userProfile.name || '').slice(0, 60)
-      })
-    });
-
-    let data;
-    try {
-      data = await response.json();
-    } catch (_) {
-      throw new Error('وصل رد غير مفهوم من خادم المساعد. جرّب مرة تانية.');
-    }
-    if (!response.ok) {
-      throw new Error(data?.error || `حصل خطأ في الاتصال (${response.status}).`);
-    }
-    const reply = typeof data?.reply === 'string' ? data.reply.trim() : '';
-    if (!reply) throw new Error('Gemini رجّع ردًا فارغًا. جرّب صياغة السؤال بطريقة تانية.');
-    return { reply, model: data.model || 'Gemini' };
-  }
-
-  async function checkHafazniAIStatus() {
-    if (modelStatus) modelStatus.textContent = 'جاري فحص الاتصال بخدمة Gemini…';
-    try {
-      const response = await fetch('/api/status', { cache: 'no-store' });
-      const data = await response.json();
-      if (!response.ok || !data?.configured) {
-        throw new Error(data?.error || 'مفتاح Gemini غير مضبوط في إعدادات Vercel.');
-      }
-      if (modelStatus) modelStatus.textContent = `متصل بخدمة Gemini (${data.model}). القواعد المخصصة محفوظة محليًا.`;
-      setStatus('اتصال Gemini جاهز. اكتب سؤالك وابدأ المحادثة.', 'success');
-    } catch (error) {
-      if (modelStatus) modelStatus.textContent = 'تعذر تأكيد الاتصال بـGemini. راجع إعدادات Vercel ثم أعد المحاولة.';
-      setStatus(error?.message || 'تعذر فحص اتصال Gemini.', 'error');
-    }
-  }
-
   async function ask(question) {
     const message = String(question || '').trim();
     if (!message || busy) return;
@@ -2593,33 +2539,17 @@ try{
     input.disabled = true;
     suggestions.hidden = true;
     addMessage('user', message);
-    const pending = addMessage('assistant', 'ياسين بيفكر في إجابتك…');
+    const pending = addMessage('assistant', 'بحلل سؤالك على الجهاز…');
     const pendingWrap = pending.closest('.ai-message');
     if (pendingWrap) pendingWrap.classList.add('pending');
 
     const previousContext = { ...dialogueContext };
     const understood = understandMessage(message, previousContext);
     try {
-      let reply = '';
-      let replySource = 'Gemini';
-      const localReply = getLocalQuickReply(message, understood, previousContext);
+      // Let the browser's own processor run this small, synchronous local pipeline.
+      let reply = runLightweightLocalEngine(message, understood, previousContext);
+      reply = String(reply || '').trim() || 'مش قادر أطلع إجابة موثوقة من المعرفة المحلية المتاحة.';
 
-      if (localReply) {
-        reply = String(localReply).trim();
-        replySource = 'محلي';
-      } else {
-        let history = conversationHistory.slice(-12);
-        if (!history.length && previousContext.lastUserMessage && previousContext.lastAssistantMessage) {
-          history = [
-            { role: 'user', text: String(previousContext.lastUserMessage).slice(0, 3000) },
-            { role: 'assistant', text: String(previousContext.lastAssistantMessage).slice(0, 3000) }
-          ];
-        }
-        const result = await callHafazniGemini([...history, { role: 'user', text: message }]);
-        reply = result.reply;
-      }
-
-      reply = String(reply || '').trim() || 'مش قادر أطلع إجابة دلوقتي. جرّب تاني.';
       conversationHistory.push({ role: 'user', text: message });
       conversationHistory.push({ role: 'assistant', text: reply });
       if (conversationHistory.length > 24) conversationHistory = conversationHistory.slice(-24);
@@ -2636,16 +2566,12 @@ try{
       saveDialogueContext();
       pending.textContent = reply;
       if (pendingWrap) pendingWrap.classList.remove('pending');
-      setStatus(
-        replySource === 'محلي'
-          ? 'تم الرد باستخدام ملفك الشخصي أو القواعد المحلية المحفوظة على هذا الجهاز.'
-          : 'تم الرد باستخدام Google Gemini. نص المحادثة أُرسل عبر خادم الموقع، ومفتاح API محفوظ على Vercel.',
-        'success'
-      );
+      const coreCount = Number(navigator.hardwareConcurrency) || 1;
+      setStatus(`تم التحليل محليًا على جهازك باستخدام JavaScript (${coreCount} نواة منطقية مُعلنة للمتصفح). لا يوجد API أو تنزيل نموذج.`, 'success');
     } catch (error) {
-      pending.textContent = error?.message || 'تعذر الاتصال بالمساعد. جرّب مرة تانية.';
+      pending.textContent = `حصل خطأ أثناء معالجة الرسالة: ${error?.message || 'خطأ غير معروف'}`;
       if (pendingWrap) pendingWrap.classList.remove('pending');
-      setStatus('تعذر الحصول على رد من Gemini. راجع الاتصال أو سجل Vercel إذا استمرت المشكلة.', 'error');
+      setStatus('المحرك المحلي واجه خطأ أثناء معالجة الرسالة.', 'error');
     } finally {
       busy = false;
       send.disabled = false;
@@ -2719,7 +2645,7 @@ try{
     customRules = loadRules();
     resetRuleForm();
     renderRules();
-    setStatus('تم حفظ القاعدة على هذا المتصفح. هتتطبق محليًا قبل Gemini عند تطابق السؤال.', 'success');
+    setStatus('تم حفظ القاعدة. المحرك المحلي هيستخدمها عند تحليل الأسئلة القادمة.', 'success');
   });
 
   function resetRuleForm() {
@@ -2735,8 +2661,7 @@ try{
     if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); form.requestSubmit(); }
   });
   const localModelStatus = document.getElementById('ai-model-status');
-  if (localModelStatus) localModelStatus.textContent = 'مساعد Gemini جاهز للفحص — القواعد المخصصة تظل محفوظة على هذا المتصفح.';
-  checkHafazniAIStatus();
+  if (localModelStatus) localModelStatus.textContent = 'محرك محلي خفيف جاهز — لا توجد ملفات نموذج للتنزيل.';
   suggestions.querySelectorAll('[data-ai-prompt]').forEach(button => {
     button.addEventListener('click', () => ask(button.dataset.aiPrompt));
   });
