@@ -246,6 +246,8 @@
 .ai-footnote{padding:0 16px 14px;color:#7a8980;font-size:11px;line-height:1.7;background:#fff}
 .ai-footnote.error{color:#a94442}
 .ai-footnote.success{color:#167b5b}
+.ai-model-control .btn{min-height:38px;padding:8px 13px;font-size:11px;white-space:nowrap}
+@media(max-width:560px){.ai-model-control{align-items:stretch!important}.ai-model-control .btn{width:100%}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:560px){.ai-intro{padding:13px;gap:9px}.ai-intro strong{font-size:19px}.ai-intro span{font-size:10px}.ai-mark{width:42px;height:42px;flex-basis:42px}.ai-clear{padding:8px 9px;font-size:10px}.ai-chat{height:52vh;min-height:230px;padding:12px}.ai-message{max-width:100%}.ai-bubble{font-size:13px}.ai-compose{padding:10px;gap:7px}.ai-compose .btn{padding:10px 12px}}
 
@@ -513,14 +515,17 @@ body.app-visible #app-shell{opacity:1;visibility:visible;pointer-events:auto;tra
   
     <section id="ai" class="page">
       <div class="section-head">
-        <div><div class="eyebrow">مساعدك الشخصي داخل حفظني</div><h2>AI</h2><p>يفهم الكلام المصري والعربي من سياق المحادثة، ويحلل السؤال قبل الرد، ويستعين ببحث Google عند الحاجة. قواعدك الخاصة لها الأولوية.</p></div>
-        <span class="pill">AI ياسين بن محمد</span>
+        <div><div class="eyebrow">مساعدك الشخصي داخل حفظني</div><h2>AI</h2><p>مساعد ذكي يجيب عن أسئلتك باستخدام Gemini، مع الاحتفاظ بقواعدك المخصصة داخل المتصفح.</p></div>
+        <span class="pill">Gemini AI</span>
       </div>
       <div class="ai-shell">
         <div class="ai-intro">
           <div class="ai-mark" aria-hidden="true">AI</div>
           <div><strong>AI ياسين بن محمد</strong><span>أهلًا بيك! معاك AI ياسين بن محمد. احكي أو اسأل بطريقتك العادية، وأنا هفهم السياق وأساعدك.</span></div>
           <button class="btn btn-outline ai-clear" id="ai-clear" type="button">محادثة جديدة</button>
+        </div>
+        <div class="ai-model-control" style="padding:12px 16px;background:#f7faf7;border-bottom:1px solid #edf0eb;font-size:11px;color:#617368;line-height:1.8">
+          <span id="ai-model-status">جاري فحص الاتصال بخدمة Gemini…</span>
         </div>
         <div class="ai-suggestions" id="ai-suggestions">
           <button type="button" class="ai-suggestion" data-ai-prompt="عامل إيه؟">عامل إيه؟</button>
@@ -530,19 +535,19 @@ body.app-visible #app-shell{opacity:1;visibility:visible;pointer-events:auto;tra
           <button type="button" class="ai-suggestion" data-ai-prompt="ما مقام البيات؟">تعلم المقامات</button>
         </div>
         <div class="ai-chat" id="ai-chat" role="log" aria-live="polite" aria-relevant="additions">
-          <div class="ai-message assistant"><span class="ai-avatar">AI</span><div class="ai-bubble">أهلًا بيك! معاك AI ياسين بن محمد، مساعدك داخل برنامج حفظني. اتكلم معايا بطريقتك العادية، حتى لو كتبت كلمة قصيرة أو باللهجة المصرية. هفهم كلامك من سياقه، وأساعدك في البرنامج والمعلومات العامة والقرآن والتعلّم، وأبحث عن مصادر حديثة عند الحاجة. وفي المسائل الشرعية الدقيقة هتحقق من المصادر وأوضح حدود المعلومة.</div></div>
+          <div class="ai-message assistant"><span class="ai-avatar">AI</span><div class="ai-bubble">أهلًا بيك! أنا AI ياسين بن محمد. اسألني بطريقتك العادية، وهساعدك في حفظني والقرآن والتجويد والأسئلة العامة. القواعد المخصصة بتاعتك بتتطبق محليًا، والأسئلة العامة بتتبعت لخدمة Gemini عشان تولّد الرد.</div></div>
         </div>
         <form class="ai-compose" id="ai-form">
           <label class="sr-only" for="ai-input">اكتب سؤالك</label>
           <textarea id="ai-input" rows="2" maxlength="3000" placeholder="اكتب سؤالك هنا…" required></textarea>
           <button class="btn btn-primary" id="ai-send" type="submit"><span>إرسال</span><span aria-hidden="true">➤</span></button>
         </form>
-        <div class="ai-footnote" id="ai-status" role="status">يحلل الرسالة والسياق، ويراجع القواعد التي أضفتها. الأسئلة المفتوحة تُرسل إلى النموذج الذكي عبر الخادم، مع بحث Google عند الحاجة.</div>
+        <div class="ai-footnote" id="ai-status" role="status">جاري فحص اتصال Gemini. عند استخدام المساعد العام، يتم إرسال نص المحادثة إلى Google Gemini عبر خادم الموقع؛ مفتاح API لا يظهر في المتصفح.</div>
       </div>
       <details class="ai-teach-panel" id="ai-teach-panel">
         <summary><span>⚙️ علّم AI ياسين بن محمد قواعد جديدة</span><small>أضف سؤالًا أو كلمات مفتاحية وحدد الرد الذي تريده</small></summary>
         <div class="ai-teach-body">
-          <p class="ai-local-note">القواعد التي تضيفها تُحفظ على هذا المتصفح والجهاز فقط، وتُستخدم قبل سؤال النموذج الذكي. اكتب صيغًا مختلفة للسؤال وافصل بينها بفاصلة؛ مثل: عامل إيه، أخبارك، إزيك.</p>
+          <p class="ai-local-note">القواعد التي تضيفها تُحفظ على هذا المتصفح والجهاز فقط، وتُطبّق محليًا قبل إرسال السؤال إلى Gemini. اكتب صيغًا مختلفة للسؤال وافصل بينها بفاصلة؛ مثل: عامل إيه، أخبارك، إزيك.</p>
           <form id="ai-rule-form" class="ai-rule-form">
             <label for="ai-rule-keywords">السؤال أو الكلمات المفتاحية</label>
             <input id="ai-rule-keywords" type="text" maxlength="240" placeholder="مثال: عامل إيه، أخبارك، إزيك" required>
@@ -1836,6 +1841,7 @@ try{
   const send = document.getElementById('ai-send');
   const status = document.getElementById('ai-status');
   const clear = document.getElementById('ai-clear');
+  const modelStatus = document.getElementById('ai-model-status');
   const suggestions = document.getElementById('ai-suggestions');
   const ruleForm = document.getElementById('ai-rule-form');
   const ruleKeywords = document.getElementById('ai-rule-keywords');
@@ -1845,9 +1851,9 @@ try{
   const ruleSave = document.getElementById('ai-rule-save');
   const ruleCancel = document.getElementById('ai-rule-cancel');
   const STORAGE_KEY = 'hafazni-ai-yaseen-rules-v1';
-  const PROFILE_KEY = 'hafazni-ai-yaseen-profile-v1';
-  const DIALOGUE_KEY = 'hafazni-ai-yaseen-dialogue-v1';
-  let conversationHistory = []; // Current chat turns sent to the private server route.
+  const PROFILE_KEY = 'hafazni-ai-yaseen-profile-v2';
+  const DIALOGUE_KEY = 'hafazni-ai-yaseen-dialogue-v2';
+  let conversationHistory = []; // Recent chat context sent securely to the server-side Gemini function.
   let busy = false;
   let editingRuleId = null;
   let customRules = loadRules();
@@ -1963,7 +1969,13 @@ try{
   function loadProfile() {
     try {
       const value = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
-      return value && typeof value === 'object' ? value : {};
+      const profile = value && typeof value === 'object' ? value : {};
+      // Older builds could confuse the assistant's display name with the user's name.
+      if (typeof profile.name === 'string' && normalizeAI(profile.name) === normalizeAI('ياسين مهند')) {
+        delete profile.name;
+        try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (_) {}
+      }
+      return profile;
     } catch (_) { return {}; }
   }
 
@@ -1991,7 +2003,7 @@ try{
     const askName = /(?:^|\s)(?:اسمي|اسمك|اسمه|اسمها)\s+(?:ايه|اي|مين|ما|ماذا)(?:\s|$)/u.test(text)
       || /(?:^|\s)(?:ايه|ما|ماذا)\s+اسمي(?:\s|$)/u.test(text);
     if (askName) return '';
-    const arabic = text.match(/(?:انا\s+)?اسمي\s+([\u0621-\u064A]{2,20})(?=\s|$)/u);
+    const arabic = text.match(/(?:انا\s+)?اسمي\s+([\u0621-\u064A]{2,20}(?:\s+[\u0621-\u064A]{2,20})?)(?=\s|$)/u);
     if (arabic && arabic[1] && !['ايه','اي','مين','ما','ماذا','هو','هي'].includes(arabic[1])) return arabic[1];
     const english = String(message || '').match(/\bmy name is\s+([a-z][a-z'-]{1,23})/i);
     return english && english[1] ? english[1] : '';
@@ -2014,6 +2026,22 @@ try{
     return '';
   }
 
+  // Lightweight intent classifier: understands task patterns without pretending to be a neural LLM.
+  function detectLocalIntent(message, normalized) {
+    const text = normalized || normalizeAI(message);
+    if (/(?:ترجم|ترجمه|translate|translation)/u.test(text)) return 'translation';
+    if (/(?:لخص|تلخيص|اختصر|ملخص|summarize|summary)/u.test(text)) return 'summarize';
+    if (/(?:احسب|حساب|كام يساوي|ناتج|calculate|solve)/u.test(text)
+      || (/\d/u.test(String(message || '')) && /[+\-*/×÷^()%]|(?:زائد|ناقص|ضرب|قسمة|في)/u.test(String(message || '')))
+      || /^[\s\d٠-٩۰-۹.+\-*/×÷^()%]+$/u.test(String(message || ''))) return 'math';
+    if (/(?:رساله|رسالة|اعتذار|تهنئه|تهنئة|شكر|ايميل|بريد)/u.test(text)) return 'writing';
+    if (/(?:برمج|كود|code|website|html|css|javascript|جافاسكريبت|بايثون|python)/u.test(text)) return 'code_request';
+    if (/(?:اكتب|اكتبلي|اكتب لي|صياغه)/u.test(text)) return 'writing';
+    if (/(?:اشرح|اشرحلي|وضح|وضحلي|فسر|فهمني|افهمني|عايز افهم|عاوز افهم|ممكن تفهمني|عرفني على|يعني ايه|ما معنى|what is|explain)/u.test(text)) return 'explain';
+    if (/(?:ازاي|كيف|طريقه|طريقة|خطوات|how to)/u.test(text)) return 'how_to';
+    return 'general';
+  }
+
   function understandMessage(message, context = dialogueContext) {
     const normalized = normalizeAI(message);
     const meaning = translateToMeaning(message);
@@ -2031,14 +2059,14 @@ try{
     const followUpOpinion = Boolean(context && (context.lastIntent === 'name_introduction' || context.lastIntent === 'name_opinion' || context.lastName))
       && hasOpinion && /(?:ولا|ده|دا|دي|هو|هي|الاسم|اسم|حلو|جميل)/u.test(normalized);
     const asksOpinion = !asksForMyName && hasOpinion && (mentionsName || Boolean(mentionedName) || followUpOpinion);
-    const asksHow = /(?:ازاي|كيف|طريقة|استخدم|اعمل)/u.test(normalized);
+    const asksHow = /(?:ازاي|كيف|طريقة|استخدم|اعمل|فهمني|افهمني|اشرح|وضح)/u.test(normalized);
     const introducesSelf = Boolean(name) && !asksForMyName;
     const resolvedName = mentionedName || (asksOpinion ? (name || context.lastName || userProfile.name || '') : '');
     return {
       normalized, meaning, tokens, name, mentionedName: resolvedName, introducesSelf,
-      intent: asksOpinion ? 'name_opinion' : asksMeaning ? 'name_meaning' : asksForMyName ? 'recall_name' : name ? 'name_introduction' : asksHow ? 'how_to' : 'general',
+      intent: asksOpinion ? 'name_opinion' : asksMeaning ? 'name_meaning' : asksForMyName ? 'recall_name' : name ? 'name_introduction' : (detectLocalIntent(message, normalized) !== 'general' ? detectLocalIntent(message, normalized) : asksHow ? 'how_to' : 'general'),
       confidence: tokens.length ? Math.min(0.99, 0.58 + Math.min(tokens.length, 7) * 0.055) : 0.1,
-      hasOpinion, mentionsName
+      hasOpinion, mentionsName, semantic: semanticTokens(message)
     };
   }
 
@@ -2122,7 +2150,17 @@ try{
     { keys: ['الحفظ','التسميع','اختبر حفظي','امتحان حفظ','حفظ القران'], answer: 'افتح قسم «حفظني»، اختار السورة، ثم اضغط «ابدأ التسميع» واسمح للمتصفح باستخدام الميكروفون. بعد ما تخلص اضغط «أنه الاختبار واحسب درجتي». راجع الكلمات المعلّمة، وخلي بالك إن التعرّف الصوتي ممكن يخطئ؛ تقدر تصحح النص المسموع قبل حساب النتيجة.' },
     { keys: ['الميكروفون','مش سامعني','التسميع مش شغال','صلاحية الميكروفون'], answer: 'لو الميكروفون مش شغال: افتح الموقع من متصفح حديث وعلى اتصال آمن HTTPS، واضغط علامة القفل بجوار عنوان الموقع واسمح باستخدام الميكروفون، ثم حدّث الصفحة. تأكد كمان إن مفيش تطبيق تاني مستخدم الميكروفون.' },
     { keys: ['المكتبه','قسم المكتبه','القران الصامت','بدون صوت'], answer: 'قسم «المكتبة» فيه قراءة القرآن الكريم بدون تشغيل صوت قارئ، وفيه دروس تعليم المقامات. اختار القسم اللي تحبه من داخل المكتبة.' },
-    { keys: ['المقامات','تعليم المقامات','مقام البيات','مقام الصبا','مقام النهاوند','مقام الحجاز','مقام الرست','مقام السيكا','مقام العجم'], answer: 'قسم المقامات في «المكتبة» مخصص للتعلّم والاستماع إلى الدروس المتاحة. المقامات أسماء لأنماط لحنية معروفة مثل البيات والصبا والنهاوند والحجاز والرست والسيكا والعجم. استخدمها للتعرّف الصوتي فقط، ولا تعتبرها أحكام تجويد أو شرطًا لصحة التلاوة.' },
+    { keys: ['المقامات','فهمني المقامات','شرح المقامات','تعليم المقامات','مقام البيات','مقام الصبا','مقام النهاوند','مقام الحجاز','مقام الرست','مقام السيكا','مقام العجم'], answer: `المقامات في التلاوة هي أنماط أو مسارات لحنية تساعد القارئ على تنويع نغمة صوته بطريقة منضبطة، زي ما الموسيقى العربية لها مقامات معروفة. هي طريقة في أداء الصوت، وليست كلمات أو أحكامًا لتغيير نطق القرآن.
+
+أشهر المقامات اللي ممكن تسمع عنها:
+• **البيات:** غالبًا يُؤدّى بنبرة هادئة ودافئة، ويبدأ به بعض القراء.
+• **الرست:** له طابع مستقر ووقور.
+• **الحجاز:** يتميز بطابع شرقي واضح ونبرة فيها شجن.
+• **الصبا:** يُعرف بطابع مؤثر وحزين نسبيًا.
+• **النهاوند:** مرن ويُستخدم في الانتقال بين الجمل اللحنية.
+• **العجم والسيكاه:** لكل واحد منهما بناء ونكهة صوتية مختلفة.
+
+المهم جدًا: المقامات ليست من أحكام التجويد، ولا يصح أن يغيّر القارئ مخارج الحروف أو المدود أو أحكام التلاوة من أجل اللحن. الأولوية دائمًا لصحة القراءة والخشوع، والتعلّم العملي يكون بالسماع على قارئ متقن. أما الحكم الشرعي التفصيلي في استخدام الألحان في التلاوة ففيه كلام وتفصيل عند أهل العلم، فلا أختصره في حكم واحد.` },
     { keys: ['الاذان','مواقيت الصلاه','وقت الصلاه','المحافظه','اختيار المحافظه'], answer: 'افتح قسم «الأذان»، واختار محافظتك أول مرة. التطبيق يحسب مواقيت الصلوات للموقع المختار ويتابع الوقت المحلي للجهاز. فعّل الصوت بزر اختبار الأذان؛ ولازم تفضل صفحة الموقع مفتوحة، لأن المتصفح قد يمنع التشغيل بعد إغلاق الصفحة أو في الخلفية.' },
     { keys: ['الاذان مش شغال','صوت الاذان','اشغل الاذان','تنبيه الصلاه'], answer: 'جرّب من قسم الأذان الضغط على «اختبار صوت الأذان» مرة واحدة للسماح بالصوت، وتأكد إن مستوى صوت الجهاز مرتفع وإن الصفحة مفتوحة. بعض المتصفحات لا تسمح بالتشغيل التلقائي في الخلفية أو بعد إغلاق الموقع.' },
     { keys: ['الاذكار','اذكار الصباح','اذكار المساء'], answer: 'من قسم «الأذكار» اختار مجموعة الأذكار المطلوبة، مثل أذكار الصباح والمساء، واتبع عدد التكرار الظاهر بجانب كل ذكر. راجع المصدر المرفق في البرنامج عند الحاجة.' },
@@ -2194,14 +2232,19 @@ try{
   ];
 
   function matchCustomRule(message) {
+    const query = ` ${translateToMeaning(message)} `;
     let best = null;
     for (const rule of customRules) {
       const terms = String(rule.keywords || '').split(/[،,;\n]+/).map(term => term.trim()).filter(term => term.length >= 2);
       for (const term of terms) {
-        const score = scoreSemanticMatch(message, term);
-        if (score >= (semanticTokens(term).length <= 1 ? 0.88 : 0.70) && (!best || score > best.score)) {
-          best = { score, answer: rule.answer };
-        }
+        const normalizedTerm = translateToMeaning(term);
+        if (!normalizedTerm) continue;
+        const exact = query.includes(` ${normalizedTerm} `);
+        const termTokens = semanticTokens(term);
+        // Single-word rules must match the actual word; never guess them by edit distance.
+        const score = exact ? 1 : (termTokens.length >= 2 ? scoreSemanticMatch(message, term) : 0);
+        const threshold = termTokens.length >= 2 ? 0.82 : 1;
+        if (score >= threshold && (!best || score > best.score)) best = { score, answer: rule.answer };
       }
     }
     return best ? best.answer : null;
@@ -2218,6 +2261,156 @@ try{
     }
     found.sort((a, b) => b.score - a.score || b.length - a.length);
     return found.length ? found[0].answer : null;
+  }
+
+  function commandPayload(message) {
+    return String(message || '')
+      .replace(/^\s*(?:من فضلك\s*)?(?:ممكن\s*)?(?:لو سمحت\s*)?(?:ترجم(?:لي|لى)?|ترجمه|ترجمة|translate|ملخص(?:لي|لى)?|لخص(?:لي|لى)?|لخص|تلخيص|اختصر|summarize|احسب(?:لي|لى)?|احسب|calculate|solve|اكتب(?:لي|لى)?|اكتب|اشرح(?:لي|لى)?|اشرح)\s*(?:لي|لى)?\s*[:：،,-]?\s*/iu, '')
+      .trim();
+  }
+
+  const AR_TO_EN = new Map(Object.entries({
+    'انا':'I','انت':'you','هو':'he','هي':'she','نحن':'we','هم':'they','هذا':'this','هذه':'this',
+    'مرحبا':'hello','اهلا':'welcome','السلام':'peace','عليكم':'upon you','صباح':'morning','مساء':'evening',
+    'الخير':'good','النور':'light','شكرا':'thanks','جزيلا':'very much','من':'from','فضلك':'please',
+    'لو':'if','سمحت':'you allow','كيف':'how','حال':'condition','حالك':'are you','انا بخير':'I am fine',
+    'بخير':'fine','احب':'love','البرمجه':'programming','اتعلم':'learn','تعلم':'learn','القران':'the Quran',
+    'ماء':'water','كتاب':'book','بيت':'house','مدرسه':'school','قلم':'pen','كبير':'big','صغير':'small',
+    'جميل':'beautiful','جديد':'new','قديم':'old','اليوم':'today','غدا':'tomorrow','امس':'yesterday',
+    'نعم':'yes','لا':'no','اريد':'want','مساعده':'help','مساعد':'assistant','صديق':'friend','صباح الخير':'good morning',
+    'مساء الخير':'good evening','السلام عليكم':'peace be upon you','وعليكم السلام':'and peace be upon you',
+    'شكرا جزيلا':'thank you very much','كيف حالك':'how are you','انا بخير':'I am fine','مع السلامه':'goodbye'
+  }));
+  const EN_TO_AR = new Map(Object.entries({
+    'hello':'مرحبا','hi':'أهلا','welcome':'أهلا بك','good':'جيد','morning':'صباح','evening':'مساء',
+    'goodbye':'مع السلامة','thanks':'شكرا','thank':'شكر','you':'أنت','please':'من فضلك','peace':'سلام',
+    'water':'ماء','book':'كتاب','house':'منزل','school':'مدرسة','pen':'قلم','beautiful':'جميل',
+    'programming':'البرمجة','learn':'يتعلم','learning':'التعلم','help':'مساعدة','friend':'صديق',
+    'how':'كيف','are':'تكون','i':'أنا','am':'أكون','fine':'بخير','today':'اليوم','tomorrow':'غدا',
+    'yesterday':'أمس','yes':'نعم','no':'لا','love':'أحب','the':'الـ','quran':'القرآن','computer':'كمبيوتر',
+    'website':'موقع','language':'لغة','arabic':'العربية','english':'الإنجليزية','name':'اسم','my':'لي'
+  }));
+
+  function localTranslate(message) {
+    const raw = commandPayload(message);
+    if (!raw) return 'اكتب النص بعد كلمة «ترجم»، مثل: ترجم صباح الخير.';
+    const normalized = normalizeAI(raw);
+    const fixed = new Map([
+      ['السلام عليكم','Peace be upon you'], ['وعليكم السلام','And peace be upon you'],
+      ['صباح الخير','Good morning'], ['مساء الخير','Good evening'], ['شكرا جزيلا','Thank you very much'],
+      ['من فضلك','Please'], ['كيف حالك','How are you?'], ['انا بخير','I am fine'],
+      ['مع السلامه','Goodbye'], ['اهلا بك','Welcome'], ['احب البرمجه','I love programming']
+    ]);
+    if (/\p{Script=Arabic}/u.test(raw)) {
+      if (fixed.has(normalized)) return `الترجمة للإنجليزية: ${fixed.get(normalized)}\n\nدي ترجمة قاموسية محلية.`;
+      const words = normalized.split(' ').filter(Boolean);
+      const translated = words.map(word => AR_TO_EN.get(word) || null);
+      const known = translated.filter(Boolean).length;
+      if (known >= Math.max(1, Math.ceil(words.length * 0.6))) {
+        return `الترجمة التقريبية للإنجليزية: ${translated.map((word, i) => word || `[${words[i]}]`).join(' ')}\n\nالكلمات بين الأقواس لم أجد لها ترجمة في القاموس المحلي.`;
+      }
+      return 'القاموس المحلي لا يحتوي على كلمات كفاية لترجمة النص ده بدقة. أقدر أترجم عبارات شائعة وكلمات أساسية، لكن الترجمة الحرة لأي نص تحتاج نموذج لغة أو قاموسًا أوسع.';
+    }
+    const words = raw.toLowerCase().match(/[a-z']+|[^\s]+/g) || [];
+    const translated = words.map(word => EN_TO_AR.get(word) || null);
+    const known = translated.filter(Boolean).length;
+    if (known >= Math.max(1, Math.ceil(words.length * 0.6))) {
+      return `الترجمة التقريبية للعربية: ${translated.map((word, i) => word || `[${words[i]}]`).join(' ')}\n\nالكلمات بين الأقواس لم أجد لها ترجمة في القاموس المحلي.`;
+    }
+    return 'القاموس المحلي مش قادر يترجم الجملة دي بشكل موثوق. جرّب عبارة أقصر أو أضف مفرداتها لقاموس المحرك.';
+  }
+
+  function localCalculate(message) {
+    let expression = commandPayload(message) || String(message || '');
+    expression = expression
+      .replace(/[٠-٩]/g, digit => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+      .replace(/[۰-۹]/g, digit => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+      .replace(/×|x|X|ضرب|في/g, '*').replace(/÷|قسمة|على/g, '/')
+      .replace(/زائد|جمع/g, '+').replace(/ناقص/g, '-').replace(/أس/g, '^')
+      .replace(/يساوي|احسب|كام|ناتج/g, ' ').replace(/,/g, '').trim();
+    if (!expression || !/^[\d\s.+\-*/%^()]+$/.test(expression)) return null;
+    const tokens = expression.match(/\d+(?:\.\d+)?|[()+\-*/%^]/g) || [];
+    if (!tokens.length || tokens.join('') !== expression.replace(/\s+/g, '')) return null;
+    let index = 0;
+    const peek = () => tokens[index];
+    const take = () => tokens[index++];
+    function primary() {
+      if (peek() === '(') {
+        take(); const value = addSub();
+        if (take() !== ')') throw new Error('القوس مش مقفول');
+        return value;
+      }
+      const token = take();
+      if (!token || !/^\d+(?:\.\d+)?$/.test(token)) throw new Error('صيغة الرقم غير صحيحة');
+      return Number(token);
+    }
+    function unary() {
+      if (peek() === '+') { take(); return unary(); }
+      if (peek() === '-') { take(); return -unary(); }
+      return primary();
+    }
+    function power() {
+      let value = unary();
+      if (peek() === '^') { take(); value = Math.pow(value, power()); }
+      return value;
+    }
+    function mulDiv() {
+      let value = power();
+      while (['*','/','%'].includes(peek())) {
+        const op = take(), right = power();
+        if ((op === '/' || op === '%') && right === 0) throw new Error('مينفعش القسمة على صفر');
+        value = op === '*' ? value * right : op === '/' ? value / right : value % right;
+      }
+      return value;
+    }
+    function addSub() {
+      let value = mulDiv();
+      while (peek() === '+' || peek() === '-') {
+        const op = take(), right = mulDiv();
+        value = op === '+' ? value + right : value - right;
+      }
+      return value;
+    }
+    try {
+      const result = addSub();
+      if (index !== tokens.length || !Number.isFinite(result) || Math.abs(result) > 1e15) return null;
+      return `الناتج = ${Number(result.toPrecision(12))}`;
+    } catch (error) {
+      return error.message || 'معادلة غير مفهومة.';
+    }
+  }
+
+  function localSummarize(message, previousContext) {
+    let body = commandPayload(message);
+    if (!body || body === message) body = String(previousContext.lastUserMessage || '').trim();
+    if (!body) return 'ابعتلي النص اللي عايز تلخيصه بعد كلمة «لخص»، وأنا أستخرج أهم الجمل منه.';
+    const sentences = body.split(/(?<=[.!؟。])\s+|\n+/u).map(s => s.trim()).filter(Boolean);
+    if (sentences.length <= 2) return `ملخص النص: ${body}`;
+    const stop = new Set(['الذي','التي','هذا','هذه','هناك','على','الى','إلى','من','في','عن','مع','كان','كانت','يكون','تكون','ان','أن','هو','هي','ثم','بعد','قبل','لكن','كما','وقد','لقد','وهو','وهي']);
+    const words = normalizeAI(body).split(' ').filter(w => w.length > 2 && !stop.has(w));
+    const freq = new Map();
+    words.forEach(w => freq.set(w, (freq.get(w) || 0) + 1));
+    const ranked = sentences.map((sentence, i) => {
+      const terms = normalizeAI(sentence).split(' ').filter(w => w.length > 2 && !stop.has(w));
+      const score = terms.reduce((sum, word) => sum + (freq.get(word) || 0), 0) / Math.max(1, Math.sqrt(terms.length));
+      return { sentence, i, score };
+    }).sort((a, b) => b.score - a.score).slice(0, Math.min(3, Math.ceil(sentences.length / 2))).sort((a, b) => a.i - b.i);
+    return 'ملخص محلي لأهم الجمل:\n• ' + ranked.map(item => item.sentence).join('\n• ') + '\n\nده تلخيص استخراجي، مش إعادة صياغة فهم عميق للنص.';
+  }
+
+  function localWriting(message) {
+    const text = normalizeAI(message);
+    if (/(?:اعتذار|اسف|اسفه)/u.test(text)) return 'ممكن تبعت الرسالة دي:\n\nأنا آسف لو كنت ضايقتك أو قصّرت في حقك. مكنش قصدي أزعلك، ويهمني أصلّح اللي حصل. أتمنى تقبل اعتذاري.';
+    if (/(?:تهنئه|مبروك|نجاح|عيد ميلاد)/u.test(text)) return 'ممكن تبعت الرسالة دي:\n\nألف مبروك! فرحان لك من قلبي، وربنا يكتب لك دايمًا النجاح والتوفيق ويحقق لك كل اللي بتتمناه.';
+    if (/(?:شكر|متشكر)/u.test(text)) return 'ممكن تبعت الرسالة دي:\n\nشكرًا جدًا على تعبك ووقتك ومساعدتك. مقدّر لك كل اللي عملته، وربنا يجزيك كل خير.';
+    return 'أقدر أجهز لك مسودة بسيطة، لكن حدّد نوع النص والمناسبة والشخص الموجّه له. مثال: «اكتب رسالة اعتذار لصاحبي».';
+  }
+
+  function localCodeTemplate(message) {
+    const text = normalizeAI(message);
+    if (/(?:بايثون|python)/u.test(text)) return 'ده مثال Python بسيط تقدر تبدأ منه:\n\nname = input("اكتب اسمك: ")\nprint(f"أهلاً يا {name}!")\n\nاكتبلي الوظيفة المطلوبة بالتحديد عشان أركّب لك كود مناسب.';
+    if (/(?:html|موقع|صفحه ويب|صفحة ويب|website)/u.test(text)) return 'ده هيكل HTML مبدئي لصفحة ويب:\n\n<!doctype html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>صفحتي</title>\n</head>\n<body>\n  <h1>أهلاً بيك</h1>\n  <p>اكتب محتوى صفحتك هنا.</p>\n</body>\n</html>\n\nقولّي عايز الصفحة تعمل إيه عشان أضيف الوظائف المطلوبة.';
+    return 'فهمت إنك عايز مساعدة برمجية. اكتبلي اللغة المطلوبة (JavaScript أو Python أو HTML/CSS) والنتيجة اللي عايز الكود يعملها، وأنا أجهّز لك مثالًا محليًا مناسبًا.';
   }
 
   function answerQuestion(message, understood, previousContext = dialogueContext) {
@@ -2269,9 +2462,17 @@ try{
     const custom = matchCustomRule(message);
     if (custom) return custom;
 
+    if (understood.intent === 'math') {
+      const result = localCalculate(message);
+      if (result) return result;
+    }
+    if (understood.intent === 'translation') return localTranslate(message);
+    if (understood.intent === 'summarize') return localSummarize(message, previousContext);
+    if (understood.intent === 'writing') return localWriting(message);
+
     const known = findKnowledgeAnswer(message);
     if (known) return known;
-
+    if (understood.intent === 'code_request') return localCodeTemplate(message);
     const meaningful = semanticTokens(message);
     if (meaningful.length === 0) {
       return `أنا معاك يا ${userProfile.name || 'صاحبي'} ❤️ اكتب سؤالك أو الموضوع اللي عايز تعرف عنه.`;
@@ -2283,11 +2484,100 @@ try{
       return 'مش عندي سياق كفاية للكلمتين دول لوحدهم. اكتب السؤال كاملًا أو زوّد اسم الموضوع، وهجاوبك مباشرة من المعلومات المتاحة عندي.';
     }
 
-    return `أنا AI ياسين بن محمد. قرأت الجملة كاملة وحللت الكلمات والسياق، لكن ما عنديش معلومة موثوقة كفاية عن الموضوع ده في قاعدة المعرفة الحالية.\n\nمش هخترع إجابة أو أقول إني فهمت حاجة مش واضحة. أقدر أجاوب عن برنامج حفظني، ومعلومات أساسية في القرآن والتجويد والعبادة، والمعلومات العامة الموجودة في مكتبتي. ولإضافة معلومة جديدة، استخدم لوحة «علّم AI ياسين بن محمد».`;
+    return `أنا حللت صيغة سؤالك محليًا، لكن وضع التشغيل الخفيف مش عنده معلومة موثوقة كفاية عن الموضوع ده. مش هخترع إجابة. أقدر أجاوب عن موضوعات حفظني والقرآن والمقامات والتجويد، وعن القواعد اللي بتضيفها بنفسك. الإجابة الحرة عن أي موضوع تحتاج نموذج لغة مثبتًا على الجهاز، وده مش بننزّله تلقائيًا هنا.`;
   }
 
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  // Lightweight on-device engine: plain JavaScript text analysis and local knowledge.
+  // It intentionally downloads no model, imports no remote AI library, and calls no API.
+  function getLocalTopicAnswer(message) {
+    const text = translateToMeaning(message);
+    const maqamat = /(?:مقامات|مقام|بيات|رست|حجاز|صبا|نهاوند|سيكا|عجم)/u.test(text);
+    if (maqamat) {
+      const item = KNOWLEDGE.find(entry => entry.keys.some(key => /مقامات|مقام/u.test(translateToMeaning(key))));
+      if (item) return item.answer;
+    }
+    const tajweed = /(?:تجويد|نون ساكنه|تنوين|ميم ساكنه|مدود|مخارج الحروف|احكام التلاوه)/u.test(text);
+    if (tajweed) {
+      const item = KNOWLEDGE.find(entry => entry.keys.some(key => /تجويد|نون ساكنه|تنوين|مدود/u.test(translateToMeaning(key))));
+      if (item) return item.answer;
+    }
+    return null;
+  }
+
+  function runLightweightLocalEngine(message, understood, previousContext) {
+    // Deterministic tasks first, then direct topic matching, user rules, and general local KB.
+    if (['name_introduction','recall_name','name_opinion','name_meaning'].includes(understood.intent)) {
+      return answerQuestion(message, understood, previousContext);
+    }
+    if (understood.intent === 'math') {
+      const result = localCalculate(message);
+      if (result) return result;
+    }
+    if (understood.intent === 'translation') return localTranslate(message);
+    if (understood.intent === 'summarize') return localSummarize(message, previousContext);
+    if (understood.intent === 'writing') return localWriting(message);
+
+    const custom = matchCustomRule(message);
+    if (custom) return custom;
+
+    const topicAnswer = getLocalTopicAnswer(message);
+    if (topicAnswer) return topicAnswer;
+
+    return answerQuestion(message, understood, previousContext);
+  }
+
+  function getLocalQuickReply(message, understood, previousContext) {
+    // Keep personal-name handling and user-created rules local to this browser.
+    if (['name_introduction', 'recall_name'].includes(understood.intent)) {
+      return answerQuestion(message, understood, previousContext);
+    }
+    const custom = matchCustomRule(message);
+    if (custom) return custom;
+    return null;
+  }
+
+  async function callHafazniGemini(messages) {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+      body: JSON.stringify({
+        messages: messages.map(item => ({
+          role: item.role,
+          content: item.text
+        })),
+        profileName: String(userProfile.name || '').slice(0, 60)
+      })
+    });
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (_) {
+      throw new Error('وصل رد غير مفهوم من خادم المساعد. جرّب مرة تانية.');
+    }
+    if (!response.ok) {
+      throw new Error(data?.error || `حصل خطأ في الاتصال (${response.status}).`);
+    }
+    const reply = typeof data?.reply === 'string' ? data.reply.trim() : '';
+    if (!reply) throw new Error('Gemini رجّع ردًا فارغًا. جرّب صياغة السؤال بطريقة تانية.');
+    return { reply, model: data.model || 'Gemini' };
+  }
+
+  async function checkHafazniAIStatus() {
+    if (modelStatus) modelStatus.textContent = 'جاري فحص الاتصال بخدمة Gemini…';
+    try {
+      const response = await fetch('/api/status', { cache: 'no-store' });
+      const data = await response.json();
+      if (!response.ok || !data?.configured) {
+        throw new Error(data?.error || 'مفتاح Gemini غير مضبوط في إعدادات Vercel.');
+      }
+      if (modelStatus) modelStatus.textContent = `متصل بخدمة Gemini (${data.model}). القواعد المخصصة محفوظة محليًا.`;
+      setStatus('اتصال Gemini جاهز. اكتب سؤالك وابدأ المحادثة.', 'success');
+    } catch (error) {
+      if (modelStatus) modelStatus.textContent = 'تعذر تأكيد الاتصال بـGemini. راجع إعدادات Vercel ثم أعد المحاولة.';
+      setStatus(error?.message || 'تعذر فحص اتصال Gemini.', 'error');
+    }
   }
 
   async function ask(question) {
@@ -2303,118 +2593,59 @@ try{
     input.disabled = true;
     suggestions.hidden = true;
     addMessage('user', message);
-    const pending = addMessage('assistant', 'بفهم كلامك وبراجع السياق…');
+    const pending = addMessage('assistant', 'ياسين بيفكر في إجابتك…');
     const pendingWrap = pending.closest('.ai-message');
     if (pendingWrap) pendingWrap.classList.add('pending');
 
     const previousContext = { ...dialogueContext };
     const understood = understandMessage(message, previousContext);
-    if (understood.introducesSelf && understood.name) {
-      userProfile.name = understood.name;
-      saveProfile();
-    }
-
     try {
-      setStatus('بقرأ الجملة كاملة، وبفهم اللهجة والمعنى المقصود…');
-      pending.textContent = 'بقرأ كلامك وبفهم المقصود من السياق…';
-      await delay(180);
-
-      // Explicit owner-authored rules take priority. Otherwise, use the real language model.
-      const custom = matchCustomRule(message);
       let reply = '';
-      let sources = [];
-      let modelName = '';
-      let searched = false;
-      let searchNotice = '';
+      let replySource = 'Gemini';
+      const localReply = getLocalQuickReply(message, understood, previousContext);
 
-      if (custom) {
-        reply = custom;
-        setStatus('لقيت قاعدة أنت ضفتها، وبطبّقها على سؤالك…');
-        pending.textContent = 'براجع القاعدة المناسبة لك…';
-        await delay(250);
+      if (localReply) {
+        reply = String(localReply).trim();
+        replySource = 'محلي';
       } else {
-        setStatus('بفهم نيتك وبراجع رسائلنا السابقة قبل ما أختار الرد…');
-        pending.textContent = 'بحلل المعنى والسياق، وبجهّز إجابة مناسبة…';
-
-        const historyForRequest = conversationHistory.slice(-12).map(item => ({
-          role: item.role,
-          text: String(item.text || '').slice(0, 1800)
-        }));
-
-        const response = await fetch('/api/ai', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'same-origin',
-          cache: 'no-store',
-          body: JSON.stringify({
-            message,
-            history: historyForRequest,
-            userName: String(userProfile.name || '').slice(0, 60),
-            customRules: customRules.slice(0, 20).map(rule => ({
-              keywords: String(rule.keywords || '').slice(0, 240),
-              answer: String(rule.answer || '').slice(0, 900)
-            }))
-          }),
-          signal: AbortSignal.timeout(60000)
-        });
-
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) {
-          const serverMessage = typeof data.error === 'string' ? data.error : '';
-          if (response.status === 404) {
-            throw new Error('مسار المساعد غير موجود على Vercel. تأكد أن الملف مرفوع في api/ai.js ثم انتظر اكتمال النشر.');
-          }
-          if (response.status === 429) {
-            throw new Error(serverMessage || 'وصل المساعد إلى حد الاستخدام المؤقت. حاول بعد قليل.');
-          }
-          throw new Error(serverMessage || `تعذر إكمال الطلب (HTTP ${response.status}).`);
+        let history = conversationHistory.slice(-12);
+        if (!history.length && previousContext.lastUserMessage && previousContext.lastAssistantMessage) {
+          history = [
+            { role: 'user', text: String(previousContext.lastUserMessage).slice(0, 3000) },
+            { role: 'assistant', text: String(previousContext.lastAssistantMessage).slice(0, 3000) }
+          ];
         }
-
-        reply = String(data.reply || '').trim();
-        if (!reply) throw new Error('وصل رد فارغ من المساعد. حاول مرة أخرى.');
-        sources = Array.isArray(data.sources) ? data.sources : [];
-        modelName = String(data.model || 'Gemini');
-        searched = Boolean(data.searchUsed);
-        searchNotice = String(data.searchNotice || '');
+        const result = await callHafazniGemini([...history, { role: 'user', text: message }]);
+        reply = result.reply;
       }
 
+      reply = String(reply || '').trim() || 'مش قادر أطلع إجابة دلوقتي. جرّب تاني.';
       conversationHistory.push({ role: 'user', text: message });
       conversationHistory.push({ role: 'assistant', text: reply });
       if (conversationHistory.length > 24) conversationHistory = conversationHistory.slice(-24);
 
-      const isNameContext = ['name_introduction', 'name_opinion', 'name_meaning'].includes(understood.intent);
-      if (isNameContext && (understood.name || understood.mentionedName)) {
-        userProfile.lastNameTopic = understood.name || understood.mentionedName;
-        saveProfile();
-      }
       dialogueContext = {
-        lastUserMessage: message.slice(0, 600),
-        lastAssistantMessage: reply.slice(0, 1200),
+        lastUserMessage: message.slice(0, 1200),
+        lastAssistantMessage: reply.slice(0, 1600),
         lastIntent: understood.intent,
-        lastName: isNameContext
-          ? (understood.name || understood.mentionedName || previousContext.lastName || userProfile.name || '')
-          : (previousContext.lastName || userProfile.lastNameTopic || '')
+        lastTopic: (understood.semantic || []).slice(0, 8).join(' '),
+        lastName: understood.intent === 'name_introduction'
+          ? (understood.name || '')
+          : (previousContext.lastName || '')
       };
       saveDialogueContext();
-
       pending.textContent = reply;
       if (pendingWrap) pendingWrap.classList.remove('pending');
-      // Render model citations as safe, ordinary links under the answer.
-      if (sources.length) {
-        const replacement = addMessage('assistant', reply, sources);
-        const newWrap = replacement.closest('.ai-message');
-        if (newWrap) newWrap.classList.remove('pending');
-        if (pendingWrap) pendingWrap.remove();
-      }
-      const details = [modelName ? `النموذج: ${modelName}` : 'الرد من القاعدة المخصصة'];
-      if (searched) details.push('تمت مراجعة نتائج بحث ويب');
-      if (searchNotice) details.push('البحث المباشر غير متاح في خطة المفتاح الحالية');
-      setStatus(`تم فهم الرسالة وإعداد الرد. ${details.join(' • ')}`, 'success');
+      setStatus(
+        replySource === 'محلي'
+          ? 'تم الرد باستخدام ملفك الشخصي أو القواعد المحلية المحفوظة على هذا الجهاز.'
+          : 'تم الرد باستخدام Google Gemini. نص المحادثة أُرسل عبر خادم الموقع، ومفتاح API محفوظ على Vercel.',
+        'success'
+      );
     } catch (error) {
-      const messageText = error && error.message ? error.message : 'حدث خطأ غير متوقع.';
-      pending.textContent = `مش قادر أوصل للمساعد الذكي الآن: ${messageText}`;
+      pending.textContent = error?.message || 'تعذر الاتصال بالمساعد. جرّب مرة تانية.';
       if (pendingWrap) pendingWrap.classList.remove('pending');
-      setStatus('لم يكتمل الاتصال بالمساعد. راجع رسالة الخطأ أعلاه؛ لن أخمّن إجابة بدل النموذج.', 'error');
+      setStatus('تعذر الحصول على رد من Gemini. راجع الاتصال أو سجل Vercel إذا استمرت المشكلة.', 'error');
     } finally {
       busy = false;
       send.disabled = false;
@@ -2488,7 +2719,7 @@ try{
     customRules = loadRules();
     resetRuleForm();
     renderRules();
-    setStatus('تم حفظ القاعدة. سيستخدمها AI ياسين بن محمد كقاعدة مخصصة قبل سؤال النموذج الذكي.', 'success');
+    setStatus('تم حفظ القاعدة على هذا المتصفح. هتتطبق محليًا قبل Gemini عند تطابق السؤال.', 'success');
   });
 
   function resetRuleForm() {
@@ -2503,6 +2734,9 @@ try{
   input.addEventListener('keydown', event => {
     if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); form.requestSubmit(); }
   });
+  const localModelStatus = document.getElementById('ai-model-status');
+  if (localModelStatus) localModelStatus.textContent = 'مساعد Gemini جاهز للفحص — القواعد المخصصة تظل محفوظة على هذا المتصفح.';
+  checkHafazniAIStatus();
   suggestions.querySelectorAll('[data-ai-prompt]').forEach(button => {
     button.addEventListener('click', () => ask(button.dataset.aiPrompt));
   });
@@ -2512,7 +2746,7 @@ try{
     dialogueContext = {};
     conversationHistory = [];
     saveDialogueContext();
-    addMessage('assistant', `بدأنا محادثة جديدة! أهلًا بيك${userProfile.name ? ' يا ' + userProfile.name : ''}، معاك AI ياسين بن محمد. اتكلم بطريقتك العادية واسأل اللي تحبه.`);
+    addMessage('assistant', 'بدأنا محادثة جديدة! أهلًا بيك، معاك AI ياسين بن محمد. اتكلم بطريقتك العادية واسأل اللي تحبه.');
     suggestions.hidden = false;
     setStatus('المحادثة الجديدة جاهزة. القواعد المخصصة ما زالت محفوظة على هذا الجهاز.', 'success');
     input.focus();
